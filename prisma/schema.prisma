@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model BuildSession {
+  id           String        @id @default(cuid())
+  ticker       String
+  stubJobId    String
+  status       String        @default("running")
+  progress     Int           @default(0)
+  error        String?
+  profileJson  String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  draftReview  DraftReview?
+  savedProfile SavedProfile?
+
+  @@index([ticker])
+}
+
+model DraftReview {
+  id             String       @id @default(cuid())
+  buildSessionId String       @unique
+  buildSession   BuildSession @relation(fields: [buildSessionId], references: [id], onDelete: Cascade)
+  decisionsJson  String
+  updatedAt      DateTime     @updatedAt
+}
+
+model SavedProfile {
+  id             String       @id @default(cuid())
+  buildSessionId String       @unique
+  buildSession   BuildSession @relation(fields: [buildSessionId], references: [id], onDelete: Cascade)
+  ticker         String
+  fieldsJson     String
+  savedAt        DateTime     @default(now())
+
+  @@index([ticker])
+}
