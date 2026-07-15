@@ -9,6 +9,15 @@ You need two terminals.
 **Terminal 1 — stub (port 9000)**
 
 ```bash
+BUILD_SECONDS=8 ./stub/run.sh
+```
+
+The script creates `stub/.venv` on first run (and rebuilds it if it's ever broken — e.g. after moving the project folder). `BUILD_SECONDS=8` speeds up local dev; leave it out if you want the full ~40s build.
+
+<details>
+<summary>Manual setup, if you prefer</summary>
+
+```bash
 cd stub
 python3 -m venv .venv
 source .venv/bin/activate
@@ -16,7 +25,7 @@ pip install -r requirements.txt
 BUILD_SECONDS=8 uvicorn profile_builder_stub:app --reload --port 9000
 ```
 
-`BUILD_SECONDS=8` speeds up local dev. Leave it out if you want the full ~40s build.
+</details>
 
 **Terminal 2 — app**
 
@@ -96,7 +105,7 @@ I didn't add cancel or streaming — the stub doesn't support either. In product
 
 ## Known limitations
 
-The stub only returns `profile` when the build hits 100%. So there's no way to review fields *during* a build, and FAILCO can't demo "user accepted 5 fields, then build failed, those 5 are still there" — there are no fields to accept before failure. I documented this honestly because the UI logic for draft persistence is there; the stub just doesn't expose partial profiles.
+The stub only returns `profile` when the build hits 100%. So there's no way to review fields _during_ a build, and FAILCO can't demo "user accepted 5 fields, then build failed, those 5 are still there" — there are no fields to accept before failure. I documented this honestly because the UI logic for draft persistence is there; the stub just doesn't expose partial profiles.
 
 I also skipped automated tests. I manually ran through the happy path, FAILCO, conflicts, low-confidence fields, bulk accept, save, and reload.
 
@@ -113,11 +122,11 @@ No auth, no multi-tenancy, no cancel button during build.
 
 ## Test tickers
 
-| Ticker | What to try |
-|--------|-------------|
+| Ticker               | What to try                         |
+| -------------------- | ----------------------------------- |
 | `ACME` (or anything) | Full flow — all field types show up |
-| `FAILCO` | Fails mid-build, hit retry |
-| empty string | Validation error |
+| `FAILCO`             | Fails mid-build, hit retry          |
+| empty string         | Validation error                    |
 
 ## Where I stopped
 

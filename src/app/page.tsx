@@ -1,7 +1,7 @@
-import { ChevronRight } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { TickerForm } from "@/features/build/components/ticker-form";
 import { BUILD_COPY, HOME_FLOW_STEPS } from "@/lib/constants/build";
+import { ChevronRight } from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -25,7 +25,9 @@ export default function HomePage() {
             {HOME_FLOW_STEPS.map((step, index) => (
               <li key={step} className="flex items-center gap-2">
                 <span className="rounded-full bg-primary/10 px-3 py-1.5 font-medium text-primary">
-                  <span className="mr-1.5 tabular-nums text-primary/70">{index + 1}.</span>
+                  <span className="mr-1.5 tabular-nums text-primary/70">
+                    {index + 1}.
+                  </span>
                   {step}
                 </span>
                 {index < HOME_FLOW_STEPS.length - 1 ? (
